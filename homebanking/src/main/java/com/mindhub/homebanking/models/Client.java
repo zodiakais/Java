@@ -11,24 +11,27 @@ import java.util.Set;
 @Entity
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator = "native")
-    @GenericGenerator(name = "native",strategy = "native")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private long id;
     private String firstName;
     private String lastName;
     private String email;
 
-    @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
 
-    @OneToMany(mappedBy = "client",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private Set<ClientLoan> clientLoans = new HashSet<>();
+
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<Card> cards = new HashSet<>();
 
     public Client() {
     }
 
     public Client(String firstName, String lastName, String email) {
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -74,7 +77,7 @@ public class Client {
         this.accounts = accounts;
     }
 
-    public void addAccount(Account account){
+    public void addAccount(Account account) {
         account.setClient(this);
         this.accounts.add(account);
     }
@@ -86,6 +89,19 @@ public class Client {
 
     public void setClientLoans(Set<ClientLoan> clientLoans) {
         this.clientLoans = clientLoans;
+    }
+
+    public Set<Card> getCards() {
+        return cards;
+    }
+
+    public void setCards(Set<Card> cards) {
+        this.cards = cards;
+    }
+    //Method to add card one by one
+    public void addCards(Card card){
+        card.setClient(this);
+        this.cards.add(card);
     }
 
     /*

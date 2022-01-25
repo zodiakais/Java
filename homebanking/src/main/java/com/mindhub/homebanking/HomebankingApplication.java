@@ -20,20 +20,20 @@ public class HomebankingApplication {
 
 
     @Bean
-    public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository) {
+    public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository, LoanRepository loanRepository, ClientLoanRepository clientLoanRepository,CardRepository cardRepository) {
         return (args) -> {
             //clientRepository.save(new Client("Melba","Morel","melba@mindhub.com"));
-            Client cliente1 = new Client("Melba", "Morel", "melba@mindhub.com");
-            Client cliente2 = new Client("Juan", "Morel", "juan@mindhub.com");
-            clientRepository.save(cliente1);
-            clientRepository.save(cliente2);
+            Client client1 = new Client("Melba", "Morel", "melba@mindhub.com");
+            Client client2 = new Client("Juan", "Morel", "juan@mindhub.com");
+            clientRepository.save(client1);
+            clientRepository.save(client2);
 
-            Account account1 = new Account("VIN001", LocalDateTime.now(), 5000, cliente1);
-            Account account2 = new Account("VIN002", LocalDateTime.now().plusDays(1), 7500, cliente1);
+            Account account1 = new Account("VIN001", LocalDateTime.now(), 5000, client1);
+            Account account2 = new Account("VIN002", LocalDateTime.now().plusDays(1), 7500, client1);
             accountRepository.save(account1);
             accountRepository.save(account2);
-            Account account3 = new Account("VIN003", LocalDateTime.now(), 5000, cliente2);
-            Account account4 = new Account("VIN004", LocalDateTime.now().plusDays(1), 7500, cliente2);
+            Account account3 = new Account("VIN003", LocalDateTime.now(), 5000, client2);
+            Account account4 = new Account("VIN004", LocalDateTime.now().plusDays(1), 7500, client2);
             accountRepository.save(account2);
             accountRepository.save(account2);
             accountRepository.save(account3);
@@ -70,14 +70,22 @@ public class HomebankingApplication {
             loanRepository.save(loan2);
             loanRepository.save(loan3);
 
-			ClientLoan clientLoan1 = new ClientLoan(400000,60,cliente1,loan1);
-			ClientLoan clientLoan2 = new ClientLoan(50000,12,cliente1,loan2);
-			ClientLoan clientLoan3 = new ClientLoan(100000,24,cliente2,loan1);
-            ClientLoan clientLoan4 = new ClientLoan(200000,36,cliente2,loan3);
-			clientLoanRepository.save(clientLoan1);
-			clientLoanRepository.save(clientLoan2);
-			clientLoanRepository.save(clientLoan3);
+            ClientLoan clientLoan1 = new ClientLoan(400000, 60, client1, loan1);
+            ClientLoan clientLoan2 = new ClientLoan(50000, 12, client1, loan2);
+            ClientLoan clientLoan3 = new ClientLoan(100000, 24, client2, loan1);
+            ClientLoan clientLoan4 = new ClientLoan(200000, 36, client2, loan3);
+            clientLoanRepository.save(clientLoan1);
+            clientLoanRepository.save(clientLoan2);
+            clientLoanRepository.save(clientLoan3);
             clientLoanRepository.save(clientLoan4);
+
+            Card card1 = new Card(client1.getFirstName() + " " + client1.getLastName(), CardType.DEBIT, CardColor.GOLD, "5643-4356-5343-4344", 334, LocalDateTime.now(), LocalDateTime.now().plusYears(5), client1);
+            Card card2 = new Card(client1.getFirstName() + " " + client1.getLastName(), CardType.CREDIT, CardColor.TITANIUM, "5323-6656-5373-4374", 454, LocalDateTime.now(), LocalDateTime.now().plusYears(5), client1);
+            Card card3 = new Card(client2.getFirstName() + " " + client2.getLastName(), CardType.CREDIT, CardColor.SILVER, "7643-6656-2364-0987", 133, LocalDateTime.now(), LocalDateTime.now().plusYears(5), client2);
+            cardRepository.save(card1);
+            cardRepository.save(card2);
+            cardRepository.save(card3);
+
 
         };
     }
