@@ -7,4 +7,6 @@ import com.mindhub.homebanking.models.Client;
 @RepositoryRestResource
 public interface ClientRepository extends JpaRepository<Client,Long> {
 
+    Client findByEmail(String email);
+
 }
