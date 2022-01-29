@@ -12,67 +12,40 @@
 </head>
 <body>
 <div id="app">
-    <div class="toast-container position-absolute p-3 top-0 end-0" id="toastPlacement">
-        <div id="danger-toast" data-bs-delay="2000" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-                <div class="toast-body">
-                    {{ errorMsg }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Main</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="../manager.html">Clients</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../web/Accounts.html">Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../web/cards.html">Cards</a>
+                </li>
+            </ul>
         </div>
-    </div>
+    </nav>
     <div class="container bg-light">
         <div class="row mt-5">
-            <div class="col-12 col-md-2">
-                <div class="bg-light">
-                    <a href="/web/accounts.html" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                        <img class="menu-logo" src="img/logo vinotinto2.png">
 
-                    </a>
-                    <hr>
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item">
-                            <a href="/web/accounts.html" class="nav-link link-dark">
-                                <i class="bi bi-inboxes"></i>
-                                Accounts
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/web/cards.html" class="nav-link active">
-                                <i class="bi bi-credit-card"></i>
-                                Cards
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/web/transfers.html" class="nav-link link-dark">
-                                <i class="bi bi-box-arrow-right"></i>
-                                Transfers
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/web/loan-application.html" class="nav-link link-dark">
-                                <i class="bi bi-cash"></i>
-                                Loans
-                            </a>
-                        </li>
-                    </ul>
-                    <hr>
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <button class="btn btn-danger img-fluid" v-on:click="signOut">Sign out</button>
-                    </ul>
-                </div>
-            </div>
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <h1 class="display-1">{{ clientInfo.name }} {{ clientInfo.lastName }} {{ clientInfo.email }}</h1>
+                        <h1 class="display-1">{{ clientInfo.firstName }} {{ clientInfo.lastName }} </h1>
+                        <h2 class="display-2">{{ clientInfo.email }}</h2>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col">
                         <h2 class="display-6 subtitle">Debit Cards</h2>
-                        <a v-if="clientInfo.cards != null && clientInfo.cards.length < 6" href="create-cards.html" id="create" class="btn btn-sm btn-outline-success">Create</a>
+
                         <div v-if="debitCards.length <= 0"><span class="small">No debit cards</span></div>
                     </div>
                 </div>

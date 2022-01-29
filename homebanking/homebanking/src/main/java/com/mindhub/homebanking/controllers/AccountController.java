@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
-    @Autowired
     private ClientRepository clientRepository;
 
     @RequestMapping("/accounts")
@@ -38,16 +37,16 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.POST)
-    public ResponseEntity<Object> createAccount(Authentication authentication) {
+    public ResponseEntity<Object> getClients(Authentication authentication) {
         Client client = this.clientRepository.findByEmail(authentication.getName());
         if (client.getAccounts().size() >= 3) {
             return new ResponseEntity<>("Client´s of accounts limit reached", HttpStatus.FORBIDDEN);
-        }else {
-            String accountNumber = "VIN" + (int)(Math.random() * 10000000-1)+1;
-            accountRepository.save(new Account(accountNumber, LocalDateTime.now(), 0, client));
+        }else{
+            Account account = new Account("VIN12345678",LocalDateTime.now(),0,client);
+            accountRepository.save(account);
             return new ResponseEntity<>(HttpStatus.CREATED);
-
         }
+
 
     }
 }
