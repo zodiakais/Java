@@ -12,13 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api")
@@ -40,7 +35,7 @@ public class TransactionController {
                                                 @RequestParam String description,
                                                 @RequestParam Long amount,
                                                 Authentication authentication) {
-
+        Client client = clientRepository.findByEmail(authentication.getName());
         Account orgAccount = this.accountRepository.findByNumber(fromAccountNumber);
         Account destAccount = this.accountRepository.findByNumber(toAccountNumber);
 
@@ -50,17 +45,16 @@ public class TransactionController {
 
 
         if (accountRepository.findByNumber(fromAccountNumber) == null)
-            return new ResponseEntity<>("La cuenta de origen no existe", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Source account does not exist", HttpStatus.FORBIDDEN);
 
         if (accountRepository.findByNumber(toAccountNumber) == null)
-            return new ResponseEntity<>("La cuenta de destiono no exite", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Destination account does not exist", HttpStatus.FORBIDDEN);
 
 
         if (fromAccountNumber.equals(toAccountNumber))
-            return new ResponseEntity<>("Las cuetnas de origen y destino son las mismas!", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Accounts are the same", HttpStatus.FORBIDDEN);
 
 
-        Client client = clientRepository.findByEmail(authentication.getName());
         Set<Account> accounts = client.getAccounts();
         Iterator iter = accounts.iterator();
         Boolean found = false;
@@ -75,15 +69,13 @@ public class TransactionController {
             }
         }
         if (!found) {
-            return new ResponseEntity<>("El cliente auntentificado no es dueño de la cuenta de origen!", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The authenticated client does not own the source account", HttpStatus.FORBIDDEN);
         }
 
 
         if (srcAccount.getBalance() < amount) {
-            return new ResponseEntity<>("Saldo insuficiente para realizar la operacion", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Insufficient balance to carry out the operation", HttpStatus.FORBIDDEN);
         }
-
-
 
 
         Transaction destTransaction = transactionRepository.save(new Transaction(TransactionType.CREDIT, amount, description, LocalDateTime.now(), destAccount));
@@ -93,7 +85,7 @@ public class TransactionController {
         destAccount.setBalance(destAccount.getBalance() + amount);
 
 
-        return new ResponseEntity<>("Operación completada con éxito", HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Transaction created", HttpStatus.ACCEPTED);
     }
 
 }

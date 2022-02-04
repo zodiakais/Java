@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @RequestMapping("/accounts/{id}")
-    public AccountDTO getAccount(@PathVariable Long id) {
+    public AccountDTO getAccounts(@PathVariable Long id) {
         return this.accountRepository.findById(id).map(AccountDTO::new).orElse(null);
     }
 
@@ -44,12 +44,12 @@ public class AccountController {
     }
 
     @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.POST)
-    public ResponseEntity<Object> createAccount(Authentication authentication) {
+    public ResponseEntity<Object> createAccounts(Authentication authentication) {
         Client client = this.clientRepository.findByEmail(authentication.getName());
         if (client.getAccounts().size() >= 3) {
             return new ResponseEntity<>("Client´s of accounts limit reached", HttpStatus.FORBIDDEN);
-        }else {
-            String accountNumber = "VIN" + (int)(Math.random() * 10000000-1)+1;
+        } else {
+            String accountNumber = "VIN" + (int) (Math.random() * 10000000 - 1) + 1;
             accountRepository.save(new Account(accountNumber, LocalDateTime.now(), 0, client));
             return new ResponseEntity<>(HttpStatus.CREATED);
 
