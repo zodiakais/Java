@@ -1,6 +1,7 @@
 package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
+import com.mindhub.homebanking.dtos.ClientDTO;
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
@@ -12,7 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,24 +26,24 @@ public class AccountController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @GetMapping("/accounts")
+    @RequestMapping("/accounts")
     public List<AccountDTO> getAccount() {
         return this.accountRepository.findAll().stream().map(AccountDTO::new).collect(Collectors.toList());
 
     }
 
-    @GetMapping("/accounts/{id}")
+    @RequestMapping("/accounts/{id}")
     public AccountDTO getAccounts(@PathVariable Long id) {
         return this.accountRepository.findById(id).map(AccountDTO::new).orElse(null);
     }
 
-    @GetMapping(value = "/clients/current/accounts")
+    @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.GET)
     public List<AccountDTO> getAccounts(Authentication authentication) {
         Client client = this.clientRepository.findByEmail(authentication.getName());
         return client.getAccounts().stream().map(AccountDTO::new).collect(Collectors.toList());
     }
 
-    @PostMapping(value = "/clients/current/accounts")
+    @RequestMapping(value = "/clients/current/accounts", method = RequestMethod.POST)
     public ResponseEntity<Object> createAccounts(Authentication authentication) {
         Client client = this.clientRepository.findByEmail(authentication.getName());
         if (client.getAccounts().size() >= 3) {

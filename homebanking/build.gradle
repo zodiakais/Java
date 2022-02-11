@@ -1,12 +1,12 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
 
 group = 'com.mindhub'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -22,13 +22,6 @@ dependencies {
 	//implementation 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'com.sendgrid:sendgrid-java:4.0.1'
-	implementation group: 'com.oracle.database.jdbc', name: 'ojdbc8', version: '21.5.0.0'
-	//implementation 'com.mashape.unirest:unirest-java:1.4.9'
-	// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.12.3'
-	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
-
 }
 
 test {
