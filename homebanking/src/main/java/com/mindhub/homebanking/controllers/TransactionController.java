@@ -28,7 +28,7 @@ public class TransactionController {
     @Autowired
     private ClientRepository clientRepository;
 
-    @RequestMapping(value = "/transactions", method = RequestMethod.POST)
+    @PostMapping(value = "/transactions")
     @Transactional
     public ResponseEntity<Object> doTransaction(@RequestParam String fromAccountNumber,
                                                 @RequestParam String toAccountNumber,
